@@ -1,10 +1,4 @@
 from pymavlink import mavutil
-import os
-
-# Set MAVLink protocol to 2.0
-os.environ["MAVLINK20"] = "1"
-
-print("Starting connection")
 
 # Start a connection listening on a UDP port
 the_connection = mavutil.mavlink_connection('/dev/ttyUSB0', baud=57600)
