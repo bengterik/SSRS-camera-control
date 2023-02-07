@@ -6,14 +6,14 @@ import sys
 import dronekit_sitl
 
 sitl = dronekit_sitl.start_default()
-connection_string = sitl.connection_string()
+connection_string = '/dev/ttyUSB0'
 
 # Import DroneKit-Python
 from dronekit import connect, VehicleMode
 
 # Connect to the Vehicle.
 print("Connecting to vehicle on: %s" % (connection_string,))
-vehicle = connect(connection_string, wait_ready=True)
+vehicle = connect(connection_string, baud=57600) # , wait_ready=True
 
 # Get some vehicle attributes (state)
 print("Get some vehicle attribute values:")
