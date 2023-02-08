@@ -24,7 +24,7 @@ send(mavutil.mavlink.MAV_CMD_DO_MOUNT_CONFIGURE, 2, 1, 1, 1, 0, 0, 0)
 
 send(mavutil.mavlink.MAV_CMD_DO_MOUNT_CONTROL, 0, 0, 0, 0, 0, 0, 2)
 
-def test_all(): 
+def test_all_depr(): 
     # pitch
     for i in range(-90, 90):
         send(mavutil.mavlink.MAV_CMD_DO_MOUNT_CONTROL, i, 0, 0, 0, 0, 0, 2)
@@ -37,4 +37,15 @@ def test_all():
     for i in range(-90, 90):
         send(mavutil.mavlink.MAV_CMD_DO_MOUNT_CONTROL, 0, 0, i, 0, 0, 0, 2)
 
-test_all()
+
+def test_all_new(): 
+    # pitch
+    for i in range(-90, 90):
+        send(mavutil.mavlink.MAV_CMD_DO_GIMBAL_MANAGER_PITCHYAW, i, 0, 0, 0, 0, 0, 0)
+
+    # yaw
+    for i in range(-90, 90):
+        send(mavutil.mavlink.MAV_CMD_DO_GIMBAL_MANAGER_PITCHYAW, 0, i, 0, 0, 0, 0, 0)
+
+#test_all_depr()
+test_all_new()
