@@ -7,7 +7,7 @@ import time
 import dronekit_sitl
 
 sitl = dronekit_sitl.start_default()
-connection_string = '/dev/ttyUSB0'
+connection_string = 'localhost:14445'
 
 # Import DroneKit-Python
 from dronekit import connect, VehicleMode
@@ -26,10 +26,10 @@ print(" System status: %s" % vehicle.system_status.state)
 print(" Mode: %s" % vehicle.mode.name)    # settable
 print("Gimbal status: %s" % vehicle.gimbal)
 
-time.sleep(10)
 while(True):
     vehicle.gimbal.rotate(0, 0, 0)
     time.sleep(1)
+    print("Rotate")
     vehicle.gimbal.rotate(-35, -8, -40)
     time.sleep(1)
 
