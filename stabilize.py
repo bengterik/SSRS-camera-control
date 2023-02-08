@@ -25,17 +25,16 @@ send(mavutil.mavlink.MAV_CMD_DO_MOUNT_CONFIGURE, 2, 1, 1, 1, 0, 0, 0)
 send(mavutil.mavlink.MAV_CMD_DO_MOUNT_CONTROL, 0, 0, 0, 0, 0, 0, 2)
 
 def test_all(): 
+    # pitch
     for i in range(-90, 90):
-        send(mavutil.mavlink.MAV_CMD_DO_MOUNT_CONTROL, 0, 0, i, 0, 0, 0, 2)
+        send(mavutil.mavlink.MAV_CMD_DO_MOUNT_CONTROL, i, 0, 0, 0, 0, 0, 2)
 
-    time.sleep(1)
-
+    # roll
     for i in range(-90, 90):
         send(mavutil.mavlink.MAV_CMD_DO_MOUNT_CONTROL, 0, i, 0, 0, 0, 0, 2)
 
-    time.sleep(1)
-
+    # yaw
     for i in range(-90, 90):
-        send(mavutil.mavlink.MAV_CMD_DO_MOUNT_CONTROL, i, 0, 0, 0, 0, 0, 2)
+        send(mavutil.mavlink.MAV_CMD_DO_MOUNT_CONTROL, 0, 0, i, 0, 0, 0, 2)
 
 test_all()
