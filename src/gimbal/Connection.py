@@ -20,3 +20,6 @@ class Connection:
         msg = self.the_connection.recv_match(type='COMMAND_ACK',blocking=False, timeout=1)
         
         print(msg)
+
+    def send_pitch_yaw(self, pitch, yaw):
+        self.send(mavutil.mavlink.MAV_CMD_DO_GIMBAL_MANAGER_PITCHYAW, pitch, yaw, 0, 0, 0, 0, 0)
