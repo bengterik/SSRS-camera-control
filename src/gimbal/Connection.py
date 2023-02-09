@@ -22,4 +22,6 @@ class Connection:
         print(msg)
 
     def send_pitch_yaw(self, pitch, yaw):
-        self.send(mavutil.mavlink.MAV_CMD_DO_GIMBAL_MANAGER_PITCHYAW, pitch, yaw, 0, 0, 0, 0, 0)
+        # Set pitch and yaw with stabilization in all axes
+        self.send(mavutil.mavlink.MAV_CMD_DO_GIMBAL_MANAGER_PITCHYAW, pitch, yaw, 0, 0, 4+8+16, 0, 0)
+        

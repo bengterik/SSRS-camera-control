@@ -8,8 +8,8 @@ class Controller:
     def __init__(self):
         self.connection = Connection.Connection()
         self.pitch = -31 # neutral pitch
-        self.yaw = -57 # neutral yaw
-        self.rate = 1
+        self.yaw = 78 # neutral yaw
+        self.rate = 3 # degrees per key press
     
 
     def on_press(self, key):
@@ -21,11 +21,11 @@ class Controller:
             self.pitch -= self.rate
             if self.pitch < -86:
                 self.pitch = -86
-        elif key == keyboard.Key.right:
-            self.yaw -= self.rate
-            if self.yaw < -175:
-                self.yaw = -175
         elif key == keyboard.Key.left:
+            self.yaw -= self.rate
+            if self.yaw < -145:
+                self.yaw = -145
+        elif key == keyboard.Key.right:
             self.yaw += self.rate
             if self.yaw > 175:
                 self.yaw = 175
@@ -45,7 +45,7 @@ class Controller:
         listener.start()
 
         # Configure for MAVLink targetting mode and stabilization
-        self.connection.send(mavutil.mavlink.MAV_CMD_DO_MOUNT_CONFIGURE, 2, 1, 1, 1, 0, 0, 0)
+        self.connection.send(mavutil.mavlink.MAV_CMD_DO_MOUNT_CONFIGURE, 2, 0, 0, 0, 0, 0, 0)
 
         # Send "natural" pitch and yaw
         self.connection.send_pitch_yaw(self.pitch, self.yaw)
