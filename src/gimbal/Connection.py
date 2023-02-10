@@ -17,11 +17,22 @@ class Connection:
         self.the_connection.mav.command_long_send(self.the_connection.target_system, self.the_connection.target_component, 
                                             command, 0, param1, param2, param3, param4, param5, param6, param7)
 
-        msg = self.the_connection.recv_match(type='COMMAND_ACK',blocking=False, timeout=1)
+        msg = self.the_connection.recv_match(type='COMMAND_ACK',blocking=True, timeout=1)
         
         print(msg)
 
     def send_pitch_yaw(self, pitch, yaw):
         # Set pitch and yaw with stabilization in all axes
         self.send(mavutil.mavlink.MAV_CMD_DO_GIMBAL_MANAGER_PITCHYAW, pitch, yaw, 0, 0, 4+8+16, 0, 0)
+    
+    def request_parameters(self):
+        self.the_connection.mav.param_request_list_send(
+            self.the_connection.target_system, self.the_connection.target_component)
         
+        while True:
+            try:
+                message = self.the_connection.recv_match(type='PARAM_VALUE', blocking=True, timeout=1).to_dict()
+                print('name: %s\tvalue: %d' % (message['param_id'],
+                                            message['param_value']))
+            except Exception as error:
+                print(error)

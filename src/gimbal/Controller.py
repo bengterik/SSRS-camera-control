@@ -3,32 +3,36 @@ import Connection
 from pynput import keyboard
 from pymavlink import mavutil
 
+# Software limits to saturate keyboard input (DOES NOT AFFECT HARDWARE LIMITS)
+YAW_MIN = -137
+YAW_MAX = 175
+PITCH_MIN = -86
+PITCH_MAX = 18
 
 class Controller:
     def __init__(self):
         self.connection = Connection.Connection()
         self.pitch = -31 # neutral pitch
         self.yaw = 78 # neutral yaw
-        self.rate = 3 # degrees per key press
-    
+        self.rate = 4 # degrees per key press
 
     def on_press(self, key):
         if key == keyboard.Key.up:
             self.pitch += self.rate
-            if self.pitch > 18:
-                self.pitch = 18
+            if self.pitch > PITCH_MAX:
+                self.pitch = PITCH_MAX
         elif key == keyboard.Key.down:
             self.pitch -= self.rate
-            if self.pitch < -86:
-                self.pitch = -86
+            if self.pitch < PITCH_MIN:
+                self.pitch = PITCH_MIN
         elif key == keyboard.Key.left:
             self.yaw -= self.rate
-            if self.yaw < -145:
-                self.yaw = -145
+            if self.yaw < YAW_MIN:
+                self.yaw = YAW_MIN
         elif key == keyboard.Key.right:
             self.yaw += self.rate
-            if self.yaw > 175:
-                self.yaw = 175
+            if self.yaw > YAW_MAX:
+                self.yaw = YAW_MAX
         if key == keyboard.Key.esc:
             # Stop listener
             return False
