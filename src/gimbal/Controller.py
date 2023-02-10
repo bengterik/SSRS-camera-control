@@ -42,7 +42,7 @@ class Controller:
         self.connection.send_pitch_yaw(self.pitch, self.yaw)
 
     # enter two angles in the terminal and send them to the gimbal
-    def control_loop(self):
+    def gimbal_control_keys(self):
         
         listener = keyboard.Listener(
             on_press=self.on_press)
@@ -59,7 +59,9 @@ class Controller:
 
 def main():
     controller = Controller()
-    controller.control_loop()
+    
+    #controller.gimbal_control_keys()
+    controller.connection.request_parameters()
 
 if __name__ == "__main__":
     main()
