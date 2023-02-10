@@ -61,7 +61,7 @@ def main():
     controller = Controller()
     
     #controller.gimbal_control_keys()
-    controller.connection.request_parameters()
+    print(controller.connection.request_parameter(b'SERVO9_MIN'))
 
 if __name__ == "__main__":
     main()

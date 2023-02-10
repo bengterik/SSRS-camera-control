@@ -33,10 +33,8 @@ class Connection:
         
         print("Requesting parameters...")
 
-        self.the_connection.mav.param_request_list_send(
-            self.the_connection.target_system, self.the_connection.target_component)
+        self.the_connection.mav.param_request_list_send(self.the_connection.target_system, self.the_connection.target_component)
                 
-        # Do-while loop
         while True:
             try:       
                 # Since number of parameters is unknown, we request until a certain timeout is reached
@@ -50,3 +48,20 @@ class Connection:
                 break
         
         print("%d parameters received" % len(self.parameters))
+
+    def request_parameter(self, parameter):
+        "Requests a single parameter from the vehicle and returns it"
+        
+        print("Requesting parameter %s..." % parameter)
+        self.the_connection.mav.param_request_read_send(
+            self.the_connection.target_system, self.the_connection.target_component, parameter, -1)
+        try:       
+            # Since number of parameters is unknown, we request until a certain timeout is reached
+            param = self.the_connection.recv_match(type='PARAM_VALUE', blocking=True, timeout=REQUEST_TIMEOUT).to_dict()
+            
+            if DEBUG: print('name: %s\tvalue: %d' % (message['param_id'], message['param_value']))
+            
+            return param['param_value']
+        
+        except Exception as error:
+            return None
