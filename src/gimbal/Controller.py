@@ -4,16 +4,16 @@ from pynput import keyboard
 from pymavlink import mavutil
 
 # Software limits to saturate keyboard input (DOES NOT AFFECT HARDWARE LIMITS)
-YAW_MIN = -137
-YAW_MAX = 175
-PITCH_MIN = -86
-PITCH_MAX = 18
+YAW_MIN = -50
+YAW_MAX = 120
+PITCH_MIN = -20
+PITCH_MAX = 30
 
 class Controller:
     def __init__(self):
         self.connection = Connection.Connection()
-        self.pitch = -31 # neutral pitch
-        self.yaw = 78 # neutral yaw
+        self.pitch = 6 # neutral pitch
+        self.yaw = 12 # neutral yaw
         self.rate = 4 # degrees per key press
 
     def on_press(self, key):
@@ -60,8 +60,8 @@ class Controller:
 def main():
     controller = Controller()
     
-    #controller.gimbal_control_keys()
-    print(controller.connection.request_parameter(b'SERVO9_MIN'))
+    controller.gimbal_control_keys()
+    #print(controller.connection.request_parameter(b'SERVO9_MIN'))
 
 if __name__ == "__main__":
     main()
