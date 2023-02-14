@@ -8,6 +8,7 @@ YAW_MIN = -50
 YAW_MAX = 120
 PITCH_MIN = -20
 PITCH_MAX = 30
+DEGREE_PER_KEY_PRESS = 4
 
 class Controller:
     def __init__(self):
@@ -15,24 +16,24 @@ class Controller:
         self.pitch = 6 # neutral pitch
         self.yaw = 12 # neutral yaw
         self.rate = 4 # degrees per key press
-
+    
+    def sat(self, value, change, min, max):
+            if value < min:
+                return min 
+            elif value > max:
+                return max
+            else:
+                return value + change
+     
     def on_press(self, key):
         if key == keyboard.Key.up:
-            self.pitch += self.rate
-            if self.pitch > PITCH_MAX:
-                self.pitch = PITCH_MAX
+            self.pitch = self.sat(self.pitch, DEGREE_PER_KEY_PRESS, PITCH_MIN, PITCH_MAX)
         elif key == keyboard.Key.down:
-            self.pitch -= self.rate
-            if self.pitch < PITCH_MIN:
-                self.pitch = PITCH_MIN
+            self.pitch = self.sat(self.pitch, -DEGREE_PER_KEY_PRESS, PITCH_MIN, PITCH_MAX)
         elif key == keyboard.Key.left:
-            self.yaw -= self.rate
-            if self.yaw < YAW_MIN:
-                self.yaw = YAW_MIN
+            self.yaw = self.sat(self.yaw, -DEGREE_PER_KEY_PRESS, YAW_MIN, YAW_MAX)
         elif key == keyboard.Key.right:
-            self.yaw += self.rate
-            if self.yaw > YAW_MAX:
-                self.yaw = YAW_MAX
+            self.yaw = self.sat(self.yaw, DEGREE_PER_KEY_PRESS,YAW_MIN, YAW_MAX)
         if key == keyboard.Key.esc:
             # Stop listener
             return False
@@ -41,7 +42,7 @@ class Controller:
         
         self.connection.send_pitch_yaw(self.pitch, self.yaw)
 
-    # enter two angles in the terminal and send them to the gimbal
+       
     def gimbal_control_keys(self):
         
         listener = keyboard.Listener(
