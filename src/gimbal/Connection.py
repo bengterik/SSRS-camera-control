@@ -1,13 +1,17 @@
 from pymavlink import mavutil
 
-DEBUG = False
+DEBUG = True
+
+SIMULATOR = 'tcp:127.0.0.1:5762'
+SERIAL = '/dev/ttyUSB0'
 
 BAUD_RATE = 57600
-PORT = '/dev/ttyACM0'
+PORT = SIMULATOR
 REQUEST_TIMEOUT = 1 # seconds
 
 class Connection:
     def __init__(self):
+        if DEBUG: print("Connecting to %s at %s baud" % (PORT, BAUD_RATE))
         self.the_connection = mavutil.mavlink_connection(PORT, baud=BAUD_RATE)
         self.parameters = {}
         self.the_connection.wait_heartbeat()

@@ -34,6 +34,8 @@ class Controller:
             self.yaw = self.sat(self.yaw, -DEGREE_PER_KEY_PRESS, YAW_MIN, YAW_MAX)
         elif key == keyboard.Key.right:
             self.yaw = self.sat(self.yaw, DEGREE_PER_KEY_PRESS,YAW_MIN, YAW_MAX)
+        #elif key == keyboard.Key.space:
+            #TODO REQUEST SERVO ANGLES
         if key == keyboard.Key.esc:
             # Stop listener
             return False
@@ -62,7 +64,6 @@ def main():
     controller = Controller()
     
     controller.gimbal_control_keys()
-    #print(controller.connection.request_parameter(b'SERVO9_MIN'))
 
 if __name__ == "__main__":
     main()
