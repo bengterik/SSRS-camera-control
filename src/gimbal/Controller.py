@@ -64,8 +64,8 @@ def main():
 
     while True:
         time.sleep(1)
-        #yaw, pitch, roll = controller.connection.read_gimbal_servos()
-        #print("yaw: %s, pitch: %s, roll: %s" % (yaw, pitch, roll))
+        yaw, pitch, roll = controller.connection.read_gimbal_servos()
+        print("yaw: %s, pitch: %s, roll: %s" % (yaw, pitch, roll))
 
 
 if __name__ == "__main__":
