@@ -3,10 +3,10 @@ from pymavlink import mavutil
 DEBUG = True
 
 SIMULATOR = 'tcp:127.0.0.1:5762'
-SERIAL = '/dev/ttyUSB0'
+SERIAL = '/dev/ttyACM0'
 
 BAUD_RATE = 57600
-PORT = SIMULATOR
+PORT = SERIAL
 REQUEST_TIMEOUT = 1 # seconds
 
 class Connection:
@@ -17,6 +17,11 @@ class Connection:
         self.the_connection.wait_heartbeat()
 
         print("Heartbeat received")
+
+    def read_gimbal_servos(self):
+        msg = self.the_connection.recv_match(type='SERVO_OUTPUT_RAW',blocking=True)
+
+        return (msg.servo4_raw, msg.servo5_raw, msg.servo6_raw)
 
     def send(self, command, param1, param2, param3, param4, param5, param6, param7):
         print("Sending command: %s" % command)

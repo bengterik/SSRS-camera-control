@@ -45,7 +45,7 @@ class Controller:
         self.connection.send_pitch_yaw(self.pitch, self.yaw)
 
        
-    def gimbal_control_keys(self):
+    def activate_gimbal_control_keys(self):
         
         listener = keyboard.Listener(
             on_press=self.on_press)
@@ -56,14 +56,17 @@ class Controller:
 
         # Send "natural" pitch and yaw
         self.connection.send_pitch_yaw(self.pitch, self.yaw)
-        
-        while True:
-            time.sleep(1)
 
 def main():
     controller = Controller()
     
-    controller.gimbal_control_keys()
+    controller.activate_gimbal_control_keys()
+
+    while True:
+        time.sleep(1)
+        #yaw, pitch, roll = controller.connection.read_gimbal_servos()
+        #print("yaw: %s, pitch: %s, roll: %s" % (yaw, pitch, roll))
+
 
 if __name__ == "__main__":
     main()
