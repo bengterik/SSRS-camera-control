@@ -5,7 +5,7 @@ from pymavlink import mavutil
 
 # Software limits to saturate keyboard input (DOES NOT AFFECT HARDWARE LIMITS)
 YAW_MIN = -50
-YAW_MAX = 120
+YAW_MAX = 124
 PITCH_MIN = -20
 PITCH_MAX = 30
 DEGREE_PER_KEY_PRESS = 4
@@ -52,10 +52,10 @@ class Controller:
         listener.start()
 
         # Configure for MAVLink targetting mode and stabilization
-        self.connection.send(mavutil.mavlink.MAV_CMD_DO_MOUNT_CONFIGURE, 2, 0, 0, 0, 0, 0, 0)
+        #self.connection.send(mavutil.mavlink.MAV_CMD_DO_MOUNT_CONFIGURE, 2, 0, 0, 0, 0, 0, 0)
 
         # Send "natural" pitch and yaw
-        self.connection.send_pitch_yaw(self.pitch, self.yaw)
+        #self.connection.send_pitch_yaw(self.pitch, self.yaw)
 
 def main():
     controller = Controller()
@@ -64,9 +64,9 @@ def main():
 
     while True:
         time.sleep(1)
-        servos = controller.connection.read_gimbal_servos()
-        print("servos: %s" % str(servos))
-        print("pitch: %s, yaw: %s" % (controller.pitch, controller.yaw))
+        #servos = controller.connection.read_gimbal_servos()
+        #print("servos: %s" % str(servos))
+        #print("pitch: %s, yaw: %s" % (controller.pitch, controller.yaw))
         #print("yaw: %s, pitch: %s, roll: %s, " % (yaw, pitch, roll))
 
 

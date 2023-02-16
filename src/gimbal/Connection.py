@@ -6,7 +6,7 @@ SIMULATOR = 'tcp:127.0.0.1:5762'
 SERIAL = '/dev/ttyACM0'
 
 BAUD_RATE = 57600
-PORT = SIMULATOR
+PORT = SERIAL
 REQUEST_TIMEOUT = 1 # seconds
 
 class Connection:
