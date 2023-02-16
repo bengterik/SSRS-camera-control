@@ -6,16 +6,18 @@ from pymavlink import mavutil
 # Software limits to saturate keyboard input (DOES NOT AFFECT HARDWARE LIMITS)
 YAW_MIN = -50
 YAW_MAX = 124
+YAW_NEUTRAL = 12
 PITCH_MIN = -20
 PITCH_MAX = 30
+PITCH_NEUTRAL = 6
 DEGREE_PER_KEY_PRESS = 4
 
 class Controller:
     def __init__(self):
         self.connection = Connection.Connection()
-        self.pitch = 6 # neutral pitch
+        self.pitch = PITCH_NEUTRAL # neutral pitch
         self.yaw = 12 # neutral yaw
-        self.rate = 4 # degrees per key press
+        self.rate = 12 # degrees per key press
     
     def sat(self, value, change, min, max):
             if value < min:
@@ -28,21 +30,32 @@ class Controller:
     def on_press(self, key):
         if key == keyboard.Key.up:
             self.pitch = self.sat(self.pitch, DEGREE_PER_KEY_PRESS, PITCH_MIN, PITCH_MAX)
+            self.connection.gimbal_pitch_yaw(self.pitch, self.yaw)
+    
         elif key == keyboard.Key.down:
             self.pitch = self.sat(self.pitch, -DEGREE_PER_KEY_PRESS, PITCH_MIN, PITCH_MAX)
+            self.connection.gimbal_pitch_yaw(self.pitch, self.yaw)
+        
         elif key == keyboard.Key.left:
             self.yaw = self.sat(self.yaw, -DEGREE_PER_KEY_PRESS, YAW_MIN, YAW_MAX)
+            self.connection.gimbal_pitch_yaw(self.pitch, self.yaw)
+
         elif key == keyboard.Key.right:
-            self.yaw = self.sat(self.yaw, DEGREE_PER_KEY_PRESS,YAW_MIN, YAW_MAX)
-        #elif key == keyboard.Key.space:
-            #TODO REQUEST SERVO ANGLES
-        if key == keyboard.Key.esc:
+            self.yaw = self.sat(self.yaw, DEGREE_PER_KEY_PRESS, YAW_MIN, YAW_MAX)
+            self.connection.gimbal_pitch_yaw(self.pitch, self.yaw)
+
+        elif key.char == 'r':
+            self.connection.gimbal_retract()
+
+        elif key.char == 'n':
+            self.connection.gimbal_neutral()
+
+        elif key == keyboard.Key.esc:
             # Stop listener
             return False
         
         print("pitch: %s, yaw: %s" % (self.pitch, self.yaw))
         
-        self.connection.send_pitch_yaw(self.pitch, self.yaw)
 
        
     def activate_gimbal_control_keys(self):
