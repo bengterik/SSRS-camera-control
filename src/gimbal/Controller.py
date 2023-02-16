@@ -5,18 +5,20 @@ from pymavlink import mavutil
 
 # Software limits to saturate keyboard input (DOES NOT AFFECT HARDWARE LIMITS)
 YAW_MIN = -50
-YAW_MAX = 124
+YAW_MAX = 128
 YAW_NEUTRAL = 12
+YAW_RETRACTED = YAW_MAX
 PITCH_MIN = -20
 PITCH_MAX = 30
 PITCH_NEUTRAL = 6
+PITCH_RETRACTED = 4
 DEGREE_PER_KEY_PRESS = 4
 
 class Controller:
     def __init__(self):
         self.connection = Connection.Connection()
         self.pitch = PITCH_NEUTRAL # neutral pitch
-        self.yaw = 12 # neutral yaw
+        self.yaw = YAW_NEUTRAL # neutral yaw
         self.rate = 12 # degrees per key press
     
     def sat(self, value, change, min, max):
@@ -46,9 +48,13 @@ class Controller:
 
         elif key.char == 'r':
             self.connection.gimbal_retract()
-
+            self.pitch = PITCH_RETRACTED
+            self.yaw = YAW_RETRACTED
+            
         elif key.char == 'n':
             self.connection.gimbal_neutral()
+            self.pitch = PITCH_NEUTRAL
+            self.yaw = YAW_NEUTRAL
 
         elif key == keyboard.Key.esc:
             # Stop listener
