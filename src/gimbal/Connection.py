@@ -1,6 +1,6 @@
 from pymavlink import mavutil
 
-DEBUG = True
+DEBUG = False
 
 SIMULATOR = 'tcp:127.0.0.1:5762'
 SERIAL = '/dev/ttyACM0'
@@ -21,7 +21,7 @@ class Connection:
     def read_gimbal_servos(self):
         msg = self.the_connection.recv_match(type='SERVO_OUTPUT_RAW',blocking=True)
 
-        return (msg.servo4_raw, msg.servo5_raw, msg.servo6_raw)
+        return (msg.servo1_raw, msg.servo2_raw, msg.servo3_raw, msg.servo4_raw, msg.servo5_raw, msg.servo6_raw)
 
     def send(self, command, param1, param2, param3, param4, param5, param6, param7):
         print("Sending command: %s" % command)
@@ -31,7 +31,7 @@ class Connection:
 
         msg = self.the_connection.recv_match(type='COMMAND_ACK',blocking=True, timeout=1)
         
-        print(msg)
+        if DEBUG: print(msg)
 
     def send_pitch_yaw(self, pitch, yaw):
         "Set pitch and yaw with stabilization in all axes"
