@@ -12,7 +12,7 @@ REQUEST_TIMEOUT = 1 # seconds
 class Connection:
     def __init__(self):
         if DEBUG: print("Connecting to %s at %s baud" % (PORT, BAUD_RATE))
-        self.the_connection = mavutil.mavlink_connection(PORT, baud=BAUD_RATE)
+        self.the_connection = mavutil.mavlink_connection(PORT, baud=BAUD_RATE, source_system=254)
         self.parameters = {}
         self.the_connection.wait_heartbeat()
 
@@ -34,19 +34,19 @@ class Connection:
         if DEBUG: print(msg)
 
     def gimbal_pitch_yaw(self, pitch, yaw):
-        "Set pitch and yaw with stabilization in all axes"
+        '''Set pitch and yaw with stabilization in all axes'''
         self.send(mavutil.mavlink.MAV_CMD_DO_GIMBAL_MANAGER_PITCHYAW, pitch, yaw, 0, 0, 4+8+16, 0, 0)
 
     def gimbal_retract(self):
-        "Retract gimbal"
+        '''Retract gimbal'''
         self.send(mavutil.mavlink.MAV_CMD_DO_MOUNT_CONTROL, 0, 0, 0, 0, 0, 0, 0)
 
     def gimbal_neutral(self):
-        "Set gimbal to neutral position"
+        '''Set gimbal to neutral position'''
         self.send(mavutil.mavlink.MAV_CMD_DO_MOUNT_CONTROL, 0, 0, 0, 0, 0, 0, 1)
     
     def request_parameters(self):
-        "Requests all parameters from the vehicle and puts them in a dictionary"
+        '''Requests all parameters from the vehicle and puts them in a dictionary'''
         
         print("Requesting parameters...")
 
@@ -67,7 +67,7 @@ class Connection:
         print("%d parameters received" % len(self.parameters))
 
     def request_parameter(self, parameter):
-        "Requests a single parameter from the vehicle and returns it"
+        '''Requests a single parameter from the vehicle and returns it'''
         
         print("Requesting parameter %s..." % parameter)
         self.the_connection.mav.param_request_read_send(
