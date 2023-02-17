@@ -4,8 +4,8 @@ from pynput import keyboard
 from pymavlink import mavutil
 
 # Software limits to saturate keyboard input (DOES NOT AFFECT HARDWARE LIMITS)
-YAW_MIN = -50
-YAW_MAX = 128
+YAW_MIN = -360
+YAW_MAX = 360
 YAW_NEUTRAL = 12
 YAW_RETRACTED = YAW_MAX
 PITCH_MIN = -20
@@ -30,6 +30,7 @@ class Controller:
                 return value + change
      
     def on_press(self, key):
+        
         if key == keyboard.Key.up:
             self.pitch = self.sat(self.pitch, DEGREE_PER_KEY_PRESS, PITCH_MIN, PITCH_MAX)
             self.connection.gimbal_pitch_yaw(self.pitch, self.yaw)
@@ -61,14 +62,15 @@ class Controller:
             return False
         
         print("pitch: %s, yaw: %s" % (self.pitch, self.yaw))
-        
-
-       
+   
     def activate_gimbal_control_keys(self):
         
         listener = keyboard.Listener(
             on_press=self.on_press)
+        
         listener.start()
+        
+        print("Keyboard control activated. Press ESC to exit.")
 
         # Configure for MAVLink targetting mode and stabilization
         #self.connection.send(mavutil.mavlink.MAV_CMD_DO_MOUNT_CONFIGURE, 2, 0, 0, 0, 0, 0, 0)

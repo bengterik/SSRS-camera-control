@@ -1,22 +1,28 @@
 from pymavlink import mavutil
 
-DEBUG = False
+DEBUG = True
 
 SIMULATOR = 'tcp:127.0.0.1:5762'
 SERIAL = '/dev/ttyACM0'
+UDP_IN = '130.235.202.14:14550'
 
 BAUD_RATE = 57600
-PORT = SERIAL
+PORT = UDP_IN
 REQUEST_TIMEOUT = 1 # seconds
 
 class Connection:
     def __init__(self):
-        if DEBUG: print("Connecting to %s at %s baud" % (PORT, BAUD_RATE))
-        self.the_connection = mavutil.mavlink_connection(PORT, baud=BAUD_RATE, source_system=254)
+        if DEBUG: print("Connecting to %s, if serial at %s baud" % (PORT, BAUD_RATE))
+        
+        if not PORT == SERIAL:
+            self.the_connection = mavutil.mavlink_connection(PORT, source_system=254)
+        else:
+            self.the_connection = mavutil.mavlink_connection(PORT, baud=BAUD_RATE, source_system=254)
+        
         self.parameters = {}
-        self.the_connection.wait_heartbeat()
+        msg = self.the_connection.wait_heartbeat()
 
-        print("Heartbeat received")
+        print("Heartbeat received from system (system %u component %u)" % (msg.get_srcSystem(), msg.get_srcComponent()))
 
     def read_gimbal_servos(self):
         msg = self.the_connection.recv_match(type='SERVO_OUTPUT_RAW',blocking=True)
