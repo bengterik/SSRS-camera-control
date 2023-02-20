@@ -2,9 +2,11 @@ from pymavlink import mavutil
 
 DEBUG = True
 
+SYSTEM_ID = 254
+
 SIMULATOR = 'tcp:127.0.0.1:5762'
 SERIAL = '/dev/ttyACM0'
-UDP_IN = '130.235.202.14:14550'
+UDP_IN = '130.235.202.14:14560'
 
 BAUD_RATE = 57600
 PORT = UDP_IN
@@ -15,9 +17,9 @@ class Connection:
         if DEBUG: print("Connecting to %s, if serial at %s baud" % (PORT, BAUD_RATE))
         
         if not PORT == SERIAL:
-            self.the_connection = mavutil.mavlink_connection(PORT, source_system=254)
+            self.the_connection = mavutil.mavlink_connection(PORT, source_system=SYSTEM_ID)
         else:
-            self.the_connection = mavutil.mavlink_connection(PORT, baud=BAUD_RATE, source_system=254)
+            self.the_connection = mavutil.mavlink_connection(PORT, baud=BAUD_RATE, source_system=SYSTEM_ID)
         
         self.parameters = {}
         msg = self.the_connection.wait_heartbeat()
