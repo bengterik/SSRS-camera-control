@@ -4,14 +4,14 @@ from pynput import keyboard
 from pymavlink import mavutil
 
 # Software limits to saturate keyboard input (DOES NOT AFFECT HARDWARE LIMITS)
-YAW_MIN = -360
-YAW_MAX = 360
-YAW_NEUTRAL = 12
-YAW_RETRACTED = YAW_MAX
+YAW_MIN = -240
+YAW_MAX = -116
+YAW_NEUTRAL = -168
+YAW_RETRACTED = YAW_MIN
 PITCH_MIN = -20
 PITCH_MAX = 30
 PITCH_NEUTRAL = 6
-PITCH_RETRACTED = 4
+PITCH_RETRACTED = 6
 DEGREE_PER_KEY_PRESS = 4
 
 class Controller:
