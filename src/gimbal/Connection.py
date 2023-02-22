@@ -47,11 +47,12 @@ class Connection:
 
     def gimbal_retract(self):
         '''Retract gimbal'''
-        self.send(mavutil.mavlink.MAV_CMD_DO_MOUNT_CONTROL, 0, 0, 0, 0, 0, 0, 0)
+        self.send(mavutil.mavlink.MAV_CMD_DO_GIMBAL_MANAGER_PITCHYAW, 0, 0, 0, 0, 1, 0, 0)
 
     def gimbal_neutral(self):
         '''Set gimbal to neutral position'''
-        self.send(mavutil.mavlink.MAV_CMD_DO_MOUNT_CONTROL, 0, 0, 0, 0, 0, 0, 1)
+        self.send(mavutil.mavlink.MAV_CMD_DO_GIMBAL_MANAGER_PITCHYAW, 0, 0, 0, 0, 2, 0, 0)
+
     
     def request_parameters(self):
         '''Requests all parameters from the vehicle and puts them in a dictionary'''

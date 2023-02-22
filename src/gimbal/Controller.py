@@ -12,7 +12,8 @@ PITCH_MIN = -20
 PITCH_MAX = 30
 PITCH_NEUTRAL = 6
 PITCH_RETRACTED = 6
-DEGREE_PER_KEY_PRESS = 4
+
+DEGREE_PER_KEY_PRESS = 1
 
 class Controller:
     def __init__(self):
