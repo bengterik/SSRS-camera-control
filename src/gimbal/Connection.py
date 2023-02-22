@@ -1,6 +1,6 @@
 from pymavlink import mavutil
 
-DEBUG = True
+DEBUG = False
 
 SYSTEM_ID = 254
 

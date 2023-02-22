@@ -1,5 +1,8 @@
 import time
 import Connection
+import evdev
+import asyncio
+from evdev import InputDevice, categorize, ecodes
 from pynput import keyboard
 from pymavlink import mavutil
 
@@ -22,10 +25,10 @@ class Controller:
         self.yaw = YAW_NEUTRAL # neutral yaw
         self.rate = 12 # degrees per key press
     
-    def sat(self, value, change, min, max):
-            if value < min:
+    def add_sat(self, value, change, min, max):
+            if value <= min:
                 return min 
-            elif value > max:
+            elif value >= max:
                 return max
             else:
                 return value + change
@@ -33,19 +36,19 @@ class Controller:
     def on_press(self, key):
         try:
             if key == keyboard.Key.up:
-                self.pitch = self.sat(self.pitch, DEGREE_PER_KEY_PRESS, PITCH_MIN, PITCH_MAX)
+                self.pitch = self.add_sat(self.pitch, DEGREE_PER_KEY_PRESS, PITCH_MIN, PITCH_MAX)
                 self.connection.gimbal_pitch_yaw(self.pitch, self.yaw)
     
             elif key == keyboard.Key.down:
-                self.pitch = self.sat(self.pitch, -DEGREE_PER_KEY_PRESS, PITCH_MIN, PITCH_MAX)
+                self.pitch = self.add_sat(self.pitch, -DEGREE_PER_KEY_PRESS, PITCH_MIN, PITCH_MAX)
                 self.connection.gimbal_pitch_yaw(self.pitch, self.yaw)
             
             elif key == keyboard.Key.left:
-                self.yaw = self.sat(self.yaw, -DEGREE_PER_KEY_PRESS, YAW_MIN, YAW_MAX)
+                self.yaw = self.add_sat(self.yaw, -DEGREE_PER_KEY_PRESS, YAW_MIN, YAW_MAX)
                 self.connection.gimbal_pitch_yaw(self.pitch, self.yaw)
 
             elif key == keyboard.Key.right:
-                self.yaw = self.sat(self.yaw, DEGREE_PER_KEY_PRESS, YAW_MIN, YAW_MAX)
+                self.yaw = self.add_sat(self.yaw, DEGREE_PER_KEY_PRESS, YAW_MIN, YAW_MAX)
                 self.connection.gimbal_pitch_yaw(self.pitch, self.yaw)
 
             elif key.char == 'r':
@@ -83,10 +86,65 @@ class Controller:
         # Send "natural" pitch and yaw
         #self.connection.send_pitch_yaw(self.pitch, self.yaw)
 
+
+    async def game_controller_listener(self, dev):
+        async for ev in dev.async_read_loop():
+            if ev.code == 3:
+                stick_value = ev.value
+
+                # Filters out noise
+                if stick_value > 130:
+                    dir = 1
+                elif stick_value < 120:
+                    dir = -1
+                else:
+                    dir = 0
+                
+                if dir != 0:
+                    print("Vertical %d" % ev.value)
+                    self.pitch = self.add_sat(self.pitch, dir, PITCH_MIN, PITCH_MAX)
+                    self.connection.gimbal_pitch_yaw(self.pitch, self.yaw)
+
+            elif ev.code == 4:
+                stick_value = ev.value
+
+                # Filters out noise
+                if stick_value > 130:
+                    dir = 1
+                elif stick_value < 120:
+                    dir = -1
+                else:
+                    dir = 0
+                
+                if dir != 0:
+                    print("Horizontal %d" % ev.value)
+                    self.yaw = self.add_sat(self.yaw, dir, YAW_MIN, YAW_MAX)
+                    self.connection.gimbal_pitch_yaw(self.pitch, self.yaw)
+
+            elif ev.code == 16:
+                self.yaw = self.add_sat(self.yaw, ev.value, YAW_MIN, YAW_MAX)
+                self.connection.gimbal_pitch_yaw(self.pitch, self.yaw)
+
+            elif ev.code == 17:
+                self.pitch = self.add_sat(self.pitch, -ev.value, PITCH_MIN, PITCH_MAX) # value inverted
+                self.connection.gimbal_pitch_yaw(self.pitch, self.yaw)
+            
+        #sprint(repr(ev))
+
 def main():
     controller = Controller()
+
+    #controller.activate_gimbal_control_keys()
+    print("loading devices")
+    devices = [evdev.InputDevice(path) for path in evdev.list_devices()]
     
-    controller.activate_gimbal_control_keys()
+    for device in devices:
+       print(device.path, device.name, device.phys)
+    
+    dev = InputDevice('/dev/input/event15')
+
+    loop = asyncio.get_event_loop()
+    loop.run_until_complete(controller.game_controller_listener(dev))
 
     while True:
         time.sleep(1)
