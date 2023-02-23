@@ -59,8 +59,8 @@ class ControllerThread(Thread):
         self.loop.run_until_complete(self.game_controller_listener(self.dev))
 
 
-JOYSTICK_YAW_SENSITIVITY = 0.01
-JOYSTICK_PITCH_SENSITIVITY = 0.01
+JOYSTICK_YAW_SENSITIVITY = 0.02
+JOYSTICK_PITCH_SENSITIVITY = 0.02
 
 JOYSTICK_NOISE_THRESHOLD = 1
 

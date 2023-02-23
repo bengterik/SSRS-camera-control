@@ -34,11 +34,12 @@ class Controller:
 
     def control_update(self):
         pitch, yaw = self.controller.position()
-        new_pos = (self.pitch+pitch, self.yaw+yaw)
+        new_pos = (self.add_sat(self.pitch, pitch, PITCH_MIN, PITCH_MAX), 
+                   self.add_sat(self.yaw, yaw, YAW_MIN, YAW_MAX))
 
         if new_pos != self.last_pos:
-            print(new_pos)
-            #self.connection.gimbal_pitch_yaw(self.pitch +, self.yaw)
+            self.connection.gimbal_pitch_yaw(new_pos[0], new_pos[1])
+            
             self.last_pos = new_pos
 
 def main():

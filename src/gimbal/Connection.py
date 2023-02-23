@@ -33,7 +33,7 @@ class Connection:
         return (msg.servo1_raw, msg.servo2_raw, msg.servo3_raw, msg.servo4_raw, msg.servo5_raw, msg.servo6_raw)
 
     def send(self, command, param1, param2, param3, param4, param5, param6, param7):
-        print("Sending command: %s" % command)
+        if DEBUG: print("Sending command: %s" % command)
         
         self.the_connection.mav.command_long_send(self.the_connection.target_system, self.the_connection.target_component, 
                                             command, 0, param1, param2, param3, param4, param5, param6, param7)
