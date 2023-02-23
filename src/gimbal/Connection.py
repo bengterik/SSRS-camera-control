@@ -22,6 +22,7 @@ class Connection:
             self.the_connection = mavutil.mavlink_connection(PORT, baud=BAUD_RATE, source_system=SYSTEM_ID)
         
         self.parameters = {}
+        print("Awaiting heartbeat...")
         msg = self.the_connection.wait_heartbeat()
 
         print("Heartbeat received from system (system %u component %u)" % (msg.get_srcSystem(), msg.get_srcComponent()))
