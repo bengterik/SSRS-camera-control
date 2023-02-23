@@ -9,10 +9,13 @@ class ControllerThread(Thread):
     def __init__(self, loop):
         Thread.__init__(self, daemon=True)
         self.loop = loop
-        self.horiz = 127
-        self.vert = 127
+        self.RST_horiz = 127 # RST = Right Stick
+        self.RST_vert = 127
         self.dev = InputDevice('/dev/input/event15')
         
+        self.DPAD_horiz = 0 # DPAD = arrow keys on controller
+        self.DPAD_vert = 0
+
         devices = [evdev.InputDevice(path) for path in evdev.list_devices()]
         
         print("Device(s):")
@@ -22,26 +25,34 @@ class ControllerThread(Thread):
     async def game_controller_listener(self, dev):
         async for ev in dev.async_read_loop():
             #print("Horiz: %s, Vert: %s" % (self.horiz, self.vert))
-            if ev.code == 4:
-                self.horiz = ev.value
+            if ev.code == 3:
+                self.RST_horiz = ev.value
 
-            elif ev.code == 3:
-                self.vert = ev.value 
+            elif ev.code == 4:
+                self.RST_vert = ev.value 
 
             elif ev.code == 16:
-                self.vert += 1
+                self.DPAD_horiz += ev.value
 
             elif ev.code == 17:
-                self.horiz += 1
+                self.DPAD_vert += ev.value 
     
-    def position(self):
-        return (self.horiz, self.vert)
+    def joystick_position(self):
+        return (self.RST_vert, self.RST_horiz)
+    
+    def DPAD_position(self):
+        temp = (self.DPAD_vert, self.DPAD_horiz)
+        self.DPAD_horiz = 0
+        self.DPAD_vert = 0
+        return temp
         
     def run(self):
         self.loop.run_until_complete(self.game_controller_listener(self.dev))
 
 
-JOYSTICK_SENSITIVITY = 0.01
+JOYSTICK_YAW_SENSITIVITY = 0.01
+JOYSTICK_PITCH_SENSITIVITY = 0.01
+
 JOYSTICK_NOISE_THRESHOLD = 1
 
 class Controller:
@@ -52,18 +63,27 @@ class Controller:
         self.controller_t = ControllerThread(asyncio.get_event_loop())
         self.controller_t.start() 
 
-
-    def tune(self, value):
+    def scale(self, value):
         scaled = value - 127
 
         if abs(scaled) > JOYSTICK_NOISE_THRESHOLD:
-            return scaled * JOYSTICK_SENSITIVITY
+            return scaled
         else:
             return 0
     
+    def joystick_read(self):
+        vert, horiz = self.controller_t.joystick_position()
+        self.pitch -= round(self.scale(vert)*JOYSTICK_PITCH_SENSITIVITY) # inverted on controller
+        self.yaw += round(self.scale(horiz)*JOYSTICK_YAW_SENSITIVITY)
+    
+    def DPAD_read(self):
+        vert, horiz = self.controller_t.DPAD_position()
+        self.pitch -= vert # inverted on controller
+        self.yaw += horiz
+    
     def position(self):
-        self.pitch += round(self.tune(self.controller_t.vert))
-        self.yaw += round(self.tune(self.controller_t.horiz))
+        self.joystick_read()
+        self.DPAD_read()
         return (self.pitch, self.yaw)
 
 def main():
@@ -72,8 +92,9 @@ def main():
     while True:
         last_pos = controller.position()
         time.sleep(0.1)
-        if controller.position() != last_pos:
-            print(controller.position())
-
+        new_pos = controller.position()
+        if new_pos != last_pos:
+            print(new_pos)
+        
 if __name__ == "__main__":
     main()
