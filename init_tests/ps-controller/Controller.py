@@ -68,8 +68,8 @@ class Controller:
     def __init__(self):
         self.pitch = 0
         self.yaw = 0
-        self.DPAD_deque = deque(maxlen=1)
-        self.RST_deque = deque(maxlen=1)
+        self.DPAD_deque = deque(maxlen=10) 
+        self.RST_deque = deque(maxlen=1) # Last value only interesting
         
         self.controller_t = ControllerThread(asyncio.get_event_loop(), self.DPAD_deque, self.RST_deque)
         self.controller_t.start()
@@ -84,7 +84,7 @@ class Controller:
     
     def joystick_read(self):
         try:
-            vert, horiz = self.RST_deque[0] # Take last value
+            vert, horiz = self.RST_deque[0] # Only peek the queue as we don't want to loose the last value
         except IndexError:
             vert, horiz = 127, 127
 
@@ -92,13 +92,12 @@ class Controller:
         self.yaw += round(self.scale(horiz)*JOYSTICK_YAW_SENSITIVITY)
     
     def DPAD_read(self):
-        try:
+        
+        # Take all inputs and add them together
+        for _ in range(len(self.DPAD_deque)):
             vert, horiz = self.DPAD_deque.pop()
-        except IndexError:
-            vert, horiz = 0, 0
-
-        self.pitch -= vert # inverted on controller
-        self.yaw += horiz
+            self.pitch -= vert # inverted on controller
+            self.yaw += horiz
     
     def position(self):
         self.joystick_read()
