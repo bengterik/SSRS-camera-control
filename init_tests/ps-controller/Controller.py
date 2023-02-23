@@ -93,7 +93,7 @@ class Controller:
     
     def DPAD_read(self):
         
-        # Take all inputs and add them together
+        # Take all D-Pad inputs and add them together
         for _ in range(len(self.DPAD_deque)):
             vert, horiz = self.DPAD_deque.pop()
             self.pitch -= vert # inverted on controller
