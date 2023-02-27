@@ -5,6 +5,9 @@ from collections import deque
 import evdev
 from evdev import InputDevice, categorize, ecodes
 
+
+DPAD_SENSITIVITY = 15
+
 class ControllerThread(Thread):
 
     def __init__(self, loop, DPAD_deque, RST_deque):
@@ -35,10 +38,10 @@ class ControllerThread(Thread):
                 self.RST_vert = ev.value 
 
             elif ev.code == 16:
-                self.DPAD_horiz += ev.value
+                self.DPAD_horiz += ev.value * DPAD_SENSITIVITY
 
             elif ev.code == 17:
-                self.DPAD_vert += ev.value 
+                self.DPAD_vert += ev.value * DPAD_SENSITIVITY
 
             if ev.code == 3 or ev.code == 4: # Joystick input
                 self.RST_deque.appendleft(self.joystick_position()) 

@@ -37,6 +37,7 @@ class Controller:
         new_pos = (self.add_sat(self.pitch, pitch, PITCH_MIN, PITCH_MAX), 
                    self.add_sat(self.yaw, yaw, YAW_MIN, YAW_MAX))
 
+        
         if new_pos != self.last_pos:
             self.connection.gimbal_pitch_yaw(new_pos[0], new_pos[1])
             
@@ -46,8 +47,10 @@ def main():
     input_device = HandController()
     controller = Controller(input_device)
 
+    controller.connection.gimbal_pitch_yaw_rate(20,20)
+    
     while True:
-        time.sleep(0.1)
+        time.sleep(0.05)
         controller.control_update()
 
 if __name__ == "__main__":

@@ -46,6 +46,10 @@ class Connection:
         '''Set pitch and yaw with stabilization in all axes'''
         self.send(mavutil.mavlink.MAV_CMD_DO_GIMBAL_MANAGER_PITCHYAW, pitch, yaw, 0, 0, 4+8+16, 0, 0)
 
+    def gimbal_pitch_yaw_rate(self, pitch_rate, yaw_rate):
+        '''Set pitch and yaw with stabilization in all axes'''
+        self.send(mavutil.mavlink.MAV_CMD_DO_GIMBAL_MANAGER_PITCHYAW, float("NaN"), float("NaN"), pitch_rate, yaw_rate, 4+8+16, 0, 0)
+
     def gimbal_retract(self):
         '''Retract gimbal'''
         self.send(mavutil.mavlink.MAV_CMD_DO_GIMBAL_MANAGER_PITCHYAW, 0, 0, 0, 0, 1, 0, 0)
