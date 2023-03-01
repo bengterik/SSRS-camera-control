@@ -23,7 +23,7 @@ def video_feed():
     #Video streaming route. Put this in the src attribute of an img tag
     return Response(gen_frames(), mimetype='multipart/x-mixed-replace; boundary=frame')
 
-
+    
 @app.route('/')
 def index():
     return render_template('index.html')
