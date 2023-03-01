@@ -47,7 +47,6 @@ def main():
     input_device = HandController()
     controller = Controller(input_device)
 
-    controller.connection.gimbal_pitch_yaw_rate(20,20)
     
     while True:
         time.sleep(0.05)
