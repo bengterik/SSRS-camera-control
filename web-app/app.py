@@ -1,7 +1,10 @@
 from flask import Flask, render_template, Response
+from flask_socketio import SocketIO
 import cv2
 
 app = Flask(__name__)
+app.config['SECRET_KEY'] = 'secret!'
+socketio = SocketIO(app)
 
 camera = cv2.VideoCapture(0)
 
@@ -23,7 +26,20 @@ def video_feed():
     #Video streaming route. Put this in the src attribute of an img tag
     return Response(gen_frames(), mimetype='multipart/x-mixed-replace; boundary=frame')
 
-    
+#     input_device = HandController()
+#     controller = Controller(input_device)    
+#     while True:
+#         time.sleep(0.05)
+#         controller.control_update()
+
 @app.route('/')
 def index():
     return render_template('index.html')
+
+
+@socketio.on('controller')
+def handle_message(data):
+    print(data)
+
+if __name__ == '__main__':
+    socketio.run(app)

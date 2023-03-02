@@ -1,10 +1,11 @@
-const refreshRate = 100;
+const refreshRate = 1;
 setInterval(pollController, refreshRate);
+var socket = io();
 
 function pollController() {
     const [gp] = navigator.getGamepads();
     const output = document.getElementById('controller');
-    
+
     let x1 = 0;
     let y1 = 0;
     let x2 = 0;
@@ -14,6 +15,9 @@ function pollController() {
     x2 += filterDeadzone(Math.round(gp.axes[2] * 100) / 100); // Right JST X
     y2 -= filterDeadzone(Math.round(gp.axes[3] * 100) / 100); // Right JST Y (inverted)
 
+    socket.on('connect', function() {
+        socket.emit('controller', {x1, y1, x2, y2});
+    });
     output.innerHTML = `Right joystick: (${x2} \t${y2}) `;
 }
 
