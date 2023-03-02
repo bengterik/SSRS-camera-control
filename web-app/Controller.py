@@ -1,4 +1,3 @@
-import time
 import Connection
 from HandController import HandController
 # Software limits to saturate keyboard input (DOES NOT AFFECT HARDWARE LIMITS)
