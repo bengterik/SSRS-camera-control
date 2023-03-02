@@ -9,21 +9,31 @@
 
 <body>
     
-    <div class="container">
-        <h1 class="text-center">Camera Control</h1>
-        <div class="row">
-            <!-- place the pre-text next to the image-->
-            
-            
-            <div class="col-lg-8  offset-lg-2">
-                <img src="{{url_for('static', filename='imgs/drone_footage.png')}}" class="center"/>             
-                <!-- <img src="{{ url_for('video_feed') }}" class="center"> -->
-            </div>
-            <div class="col" style="float:left">
-                <pre id="controller" style="font-size: xx-large;">Right joystick: (0    0) </pre>
-                <script type="text/javascript" src="{{ url_for('static', filename='js/readController.js') }}"></script>    
-            </div>
+    <div class="container">  
+        <img src="{{url_for('static', filename='imgs/drone_footage.png')}}" class="center"/>             
+        <!-- <img src="{{ url_for('video_feed') }}" class="center"> -->
+
+        <div class="bottom-left" style="float:left">
+            <pre id="controller" class="viewable-text">Right joystick: (0    0) </pre>
+            <script type="text/javascript" src="{{ url_for('static', filename='js/readController.js') }}"></script>    
         </div>
+
+        <div class="bottom-right" style="float:right">
+            <pre id="camera" class="viewable-text">Latency: 1000ms </pre>
+        </div>
+        
+        <div class="top-left" style="float:left">
+            <pre id="camera" class="viewable-text">Some data</pre>
+        </div>
+
+        <div class="top-right" style="float:right">
+            <pre id="camera" class="viewable-text">Some other data</pre>
+        </div>
+
+        <div class="centered">
+            <pre id="camera" class="viewable-text" style="color: red;">WARNING</pre>
+        </div>
+
     </div>
 </body>
 
