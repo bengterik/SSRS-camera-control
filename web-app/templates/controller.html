@@ -11,9 +11,9 @@
 <script>
     
     const refreshRate = 100;
-    setInterval(gameLoop, refreshRate);
+    setInterval(pollController, refreshRate);
 
-    function gameLoop() {
+    function pollController() {
         const [gp] = navigator.getGamepads();
 
         let x1 = 0;
@@ -25,7 +25,9 @@
         x2 += filterDeadzone(Math.round(gp.axes[2] * 100) / 100); // Right JST X
         y2 -= filterDeadzone(Math.round(gp.axes[3] * 100) / 100); // Right JST Y (inverted)
 
-        output.innerHTML = `(${x1} \t${y1})\n(${x2} \t${y2}) `;
+        if (x1 || y1 || x2 || y2) {
+            output.innerHTML = `(${x1} \t${y1})\n(${x2} \t${y2}) `;
+        }
     }
 
     function filterDeadzone(value) {
