@@ -25,9 +25,7 @@
         x2 += filterDeadzone(Math.round(gp.axes[2] * 100) / 100); // Right JST X
         y2 -= filterDeadzone(Math.round(gp.axes[3] * 100) / 100); // Right JST Y (inverted)
 
-        if (x1 || y1 || x2 || y2) {
-            output.innerHTML = `(${x1} \t${y1})\n(${x2} \t${y2}) `;
-        }
+        output.innerHTML = `(${x1} \t${y1})\n(${x2} \t${y2}) `;
     }
 
     function filterDeadzone(value) {
