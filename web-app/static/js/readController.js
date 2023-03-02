@@ -15,8 +15,6 @@ function pollController() {
     y2 -= filterDeadzone(Math.round(gp.axes[3] * 100) / 100); // Right JST Y (inverted)
 
     output.innerHTML = `Right joystick: (${x2} \t${y2}) `;
-    console_log(`(${x1} \t${y1})\n(${x2} \t${y2}) `);
-    log(`(${x1} \t${y1})\n(${x2} \t${y2}) `);
 }
 
 function filterDeadzone(value) {
