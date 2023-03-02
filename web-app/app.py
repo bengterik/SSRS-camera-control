@@ -26,4 +26,4 @@ def video_feed():
     
 @app.route('/')
 def index():
-    return render_template('index.html')
+    return render_template('controller.html')
