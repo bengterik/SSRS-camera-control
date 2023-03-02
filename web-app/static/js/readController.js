@@ -3,7 +3,7 @@ setInterval(pollController, refreshRate);
 
 function pollController() {
     const [gp] = navigator.getGamepads();
-    const output = document.getElementById('output');
+    const output = document.getElementById('controller');
     
     let x1 = 0;
     let y1 = 0;
@@ -14,7 +14,9 @@ function pollController() {
     x2 += filterDeadzone(Math.round(gp.axes[2] * 100) / 100); // Right JST X
     y2 -= filterDeadzone(Math.round(gp.axes[3] * 100) / 100); // Right JST Y (inverted)
 
-    output.innerHTML = `(${x1} \t${y1})\n(${x2} \t${y2}) `;
+    output.innerHTML = `Right joystick: (${x2} \t${y2}) `;
+    console_log(`(${x1} \t${y1})\n(${x2} \t${y2}) `);
+    log(`(${x1} \t${y1})\n(${x2} \t${y2}) `);
 }
 
 function filterDeadzone(value) {

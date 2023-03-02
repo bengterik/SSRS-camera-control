@@ -8,18 +8,21 @@
 </head>
 
 <body>
-
+    
     <div class="container">
         <h1 class="text-center">Camera Control</h1>
         <div class="row">
+            <!-- place the pre-text next to the image-->
+            
+            
             <div class="col-lg-8  offset-lg-2">
-                <img src="{{url_for('static', filename='drone_footage.png')}}" class="center"/>                
+                <img src="{{url_for('static', filename='imgs/drone_footage.png')}}" class="center"/>             
                 <!-- <img src="{{ url_for('video_feed') }}" class="center"> -->
             </div>
-        </div>
-        <div class="row">
-            <pre id="output"></pre>
-            <script type="readController.js"></script>
+            <div class="col" style="float:left">
+                <pre id="controller" style="font-size: xx-large;">Right joystick: (0    0) </pre>
+                <script type="text/javascript" src="{{ url_for('static', filename='js/readController.js') }}"></script>    
+            </div>
         </div>
     </div>
 </body>
