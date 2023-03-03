@@ -1,12 +1,17 @@
 from flask import Flask, render_template, Response
 from flask_socketio import SocketIO
 import cv2
+import Controller
+import Connection
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'secret!'
 socketio = SocketIO(app)
 
 camera = cv2.VideoCapture(0)
+
+# controller = Controller()
+# connection = Connection()
 
 def gen_frames():  # generate frame by frame from camera
     while True:
@@ -31,9 +36,14 @@ def index():
     return render_template('index.html')
 
 @socketio.on('controller')
-def handle_message(data):
-    # print the x2 and y2 values
-    print(data['x2'], data['y2'])
+def handle_controller_input(data):
+    global controller
+
+    x = data['x2']
+    y = data['y2']
+    
+    if x >= -1 and x <= 1 and y >= -1 and y <= 1:
+        print("x: %f\ty: %f" % (x, y))
 
 if __name__ == '__main__':
     socketio.run(app)
