@@ -26,20 +26,20 @@ def video_feed():
     #Video streaming route. Put this in the src attribute of an img tag
     return Response(gen_frames(), mimetype='multipart/x-mixed-replace; boundary=frame')
 
-#     input_device = HandController()
-#     controller = Controller(input_device)    
-#     while True:
-#         time.sleep(0.05)
-#         controller.control_update()
-
 @app.route('/')
 def index():
     return render_template('index.html')
 
-
 @socketio.on('controller')
 def handle_message(data):
     print(data)
+
+# @socketio.on('joystick_input')
+# def process_joystick_input(data):
+#   # Extract joystick values from the WebSocket message
+#     x = data['x']
+#     y = data['y']
+#     print(x, y)
 
 if __name__ == '__main__':
     socketio.run(app)
