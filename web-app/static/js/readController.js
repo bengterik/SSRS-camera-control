@@ -1,5 +1,8 @@
-const refreshRate = 20;
-setInterval(pollController, refreshRate);
+window.addEventListener("gamepadconnected", (e) => {
+    const refreshRate = 20;
+    setInterval(pollController, refreshRate);
+  });
+
 var socket = io();
 socket.on()
 
