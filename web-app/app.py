@@ -6,7 +6,6 @@ app = Flask(__name__)
 app.config['SECRET_KEY'] = 'secret!'
 socketio = SocketIO(app)
 
-counter = 0
 camera = cv2.VideoCapture(0)
 
 def gen_frames():  # generate frame by frame from camera
@@ -33,10 +32,8 @@ def index():
 
 @socketio.on('controller')
 def handle_message(data):
-    global counter
-    counter += 1
-    print(counter)
-    print(data)
+    # print the x2 and y2 values
+    print(data['x2'], data['y2'])
 
 if __name__ == '__main__':
     socketio.run(app)
