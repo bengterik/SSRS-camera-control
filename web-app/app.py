@@ -6,6 +6,7 @@ app = Flask(__name__)
 app.config['SECRET_KEY'] = 'secret!'
 socketio = SocketIO(app)
 
+counter = 0
 camera = cv2.VideoCapture(0)
 
 def gen_frames():  # generate frame by frame from camera
@@ -32,14 +33,10 @@ def index():
 
 @socketio.on('controller')
 def handle_message(data):
+    global counter
+    counter += 1
+    print(counter)
     print(data)
-
-# @socketio.on('joystick_input')
-# def process_joystick_input(data):
-#   # Extract joystick values from the WebSocket message
-#     x = data['x']
-#     y = data['y']
-#     print(x, y)
 
 if __name__ == '__main__':
     socketio.run(app)

@@ -1,11 +1,13 @@
-const refreshRate = 100;
+const refreshRate = 20;
 setInterval(pollController, refreshRate);
 var socket = io();
 socket.on()
 
+let sentZero = false;
+const output = document.getElementById('controller');
+
 function pollController() {
     const [gp] = navigator.getGamepads();
-    const output = document.getElementById('controller');
 
     let x1 = 0;
     let y1 = 0;
@@ -16,12 +18,21 @@ function pollController() {
     x2 += filterDeadzone(Math.round(gp.axes[2] * 100) / 100); // Right JST X
     y2 -= filterDeadzone(Math.round(gp.axes[3] * 100) / 100); // Right JST Y (inverted)
 
-    socket.emit('controller', {x1, y1, x2, y2});
-    
-    output.innerHTML = `Right joystick: (${x2} \t${y2}) `;
+    // if any of the values are not 0, send them to the server
+    if (x1 != 0.00 || y1 != 0.00 || x2 != 0.00 || y2 != 0.00) {
+        socket.emit('controller', {x1, y1, x2, y2});
+        output.innerHTML = `Right joystick: (${x2} \t${y2}) `;
+        sentZero = false;
+    } else if (!sentZero) {
+        socket.emit('controller', {x1, y1, x2, y2});
+        output.innerHTML = `Right joystick: (${x2} \t${y2}) `;
+        sentZero = true;
+    }
 }
 
 function filterDeadzone(value) {
     const deadzone = 0.05;
     return (Math.abs(value) > deadzone) ? value : 0;
 }
+
+//requestAnimationFrame(pollController);
