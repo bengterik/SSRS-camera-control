@@ -8,7 +8,7 @@ app = Flask(__name__)
 app.config['SECRET_KEY'] = 'secret!'
 socketio = SocketIO(app)
 
-camera = cv2.VideoCapture(0)
+#camera = cv2.VideoCapture(0)
 
 controller = Controller()
 #connection = Connection()

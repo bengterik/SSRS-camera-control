@@ -12,10 +12,15 @@
     <script type="text/javascript" src="{{ url_for('static', filename='js/janus.js') }}"></script>
 
     <div class="container">  
-        <!-- <img src="{{url_for('static', filename='imgs/drone_footage.png')}}" class="center"/>              -->
+        <img src="{{url_for('static', filename='imgs/drone_footage.png')}}" class="center"/>             
         <!-- <img src="{{ url_for('video_feed') }}" class="center"> -->
-
-        <script type="text/javascript" src="{{ url_for('static', filename='js/getJanusStream.js') }}"></script>
+        
+        
+        
+        <div class="top-left" style="float:left">
+            <pre id="topleft" class="viewable-text">Some data</pre>
+            <script type="module" src="{{ url_for('static', filename='js/getJanusStream.js') }}"></script>
+        </div>
 
         <div class="bottom-left" style="float:left">
             <pre id="controller" class="viewable-text">Right joystick: (0    0) </pre>
@@ -23,15 +28,12 @@
         </div>
 
         <div class="bottom-right" style="float:right">
-            <pre id="camera" class="viewable-text">Latency: 1000ms </pre>
+            <pre id="bot-right" class="viewable-text">Latency: 1000ms </pre>
         </div>
         
-        <div class="top-left" style="float:left">
-            <pre id="camera" class="viewable-text">Some data</pre>
-        </div>
 
         <div class="top-right" style="float:right">
-            <pre id="camera" class="viewable-text">Some other data</pre>
+            <pre id="top-right" class="viewable-text">Some other data</pre>
         </div>
 
         <div class="centered">

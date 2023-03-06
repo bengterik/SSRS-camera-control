@@ -9,6 +9,10 @@ socket.on()
 let sentZero = false;
 const output = document.getElementById('controller');
 
+
+// const output1 = document.getElementById('topleft');
+// output1.innerHTML = "Connecting to Janus...";
+
 function pollController() {
     const [gp] = navigator.getGamepads();
 
