@@ -9,12 +9,13 @@
 
 <body>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js" integrity="sha512-q/dWJ3kcmjBLU4Qc47E4A9kTB4m3wuTY7vkFJDTZKjTs8jhyGQnaUrxa0Ytd0ssMZhbNua9hE+E7Qv1j+DyZwA==" crossorigin="anonymous"></script>
-    
+    <script type="text/javascript" src="{{ url_for('static', filename='js/janus.js') }}"></script>
+
     <div class="container">  
         <!-- <img src="{{url_for('static', filename='imgs/drone_footage.png')}}" class="center"/>              -->
         <!-- <img src="{{ url_for('video_feed') }}" class="center"> -->
 
-        <script type="text/javascript" src="{{ url_for('static', filename='js/getRTCStream.js') }}"></script>
+        <script type="text/javascript" src="{{ url_for('static', filename='js/getJanusStream.js') }}"></script>
 
         <div class="bottom-left" style="float:left">
             <pre id="controller" class="viewable-text">Right joystick: (0    0) </pre>
