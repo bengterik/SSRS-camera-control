@@ -46,6 +46,7 @@ Janus.init({
                             is_private: false
                         };
                         localHandle.send({ message: subscribe });
+
                         let join = {
                             request: "join",
                             room: 1000,
@@ -64,8 +65,9 @@ Janus.init({
                         console.log(msg);
                         let event = msg["videoroom"];
                         // Handle msg, if needed, and check jsep
-                        if (event === "event") {
-                            if(msg["publishers"]) {
+                        console.log("Event: " + event);
+                        if (event === "event" || event === "joined") { // event from the room
+                            if(msg["publishers"].length) {  
                                 let list = msg["publishers"];
                                 Janus.debug("Got a list of available publishers/feeds:", list);
                                 let sources = null;
@@ -94,8 +96,7 @@ Janus.init({
                                         sources = [];
                                     sources.push(streams);
                                 }
-                                subscribeToStreams(sources);
-                                    
+                                subscribeToStreams(sources); 
                             }
                         }
                         
