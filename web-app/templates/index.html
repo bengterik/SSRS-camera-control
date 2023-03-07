@@ -12,9 +12,11 @@
     <script type="text/javascript" src="{{ url_for('static', filename='js/janus.js') }}"></script>
 
     <div class="container">  
-        <img src="{{url_for('static', filename='imgs/drone_footage.png')}}" class="center"/>             
-        <!-- <img src="{{ url_for('video_feed') }}" class="center"> -->
+        <!-- <img src="{{url_for('static', filename='imgs/drone_footage.png')}}" class="center"/>             
+        <img src="{{ url_for('video_feed') }}" class="center"> -->
         
+        <video class="rounded centered" id="remotevideo" width=100% autoplay playsinline></video>
+
         <div class="top-left" style="float:left">
             <pre id="topleft" class="viewable-text">Some data</pre>
         </div>

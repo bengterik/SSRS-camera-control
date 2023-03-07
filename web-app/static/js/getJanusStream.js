@@ -222,6 +222,14 @@ function subscribeToStreams(sources){
 
             onremotetrack: function(track, mid, on, metadata) {
                 console.log('Receiving remote track: ', track['kind']);
+                if (track['kind'] === 'video') {
+                    let stream = new MediaStream([track]);
+                    console.log(stream.getTracks());
+                    console.log(stream.getVideoTracks());
+                    const videoElement = document.getElementById("remotevideo");
+                    Janus.attachMediaStream(videoElement, stream);
+                    console.log('width: ', videoElement.videoWidth);
+                }
             },
             error: function(cause) {
                 // Error, can't go on...
