@@ -26,6 +26,4 @@ class Controller:
     def update_position(self, pitch, yaw):
         new_pitch = self.add_sat(self.last_pos[0], pitch, PITCH_MIN, PITCH_MAX), 
         new_yaw = self.add_sat(self.last_pos[1], yaw, YAW_MIN, YAW_MAX)
-        last_pos = (new_pitch, new_yaw)
-
-        return last_pos
+        self.last_pos = (new_pitch, new_yaw)

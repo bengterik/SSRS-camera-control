@@ -97,6 +97,8 @@ Janus.init({
                                     sources.push(streams);
                                 }
                                 subscribeToStreams(sources); 
+                            } else {
+                                console.log("No publishers/feeds available");
                             }
                         }
                         
@@ -229,7 +231,7 @@ function subscribeToStreams(sources){
                     console.log(stream.getVideoTracks());
                     const videoElement = document.getElementById("remotevideo");
                     Janus.attachMediaStream(videoElement, stream);
-                    console.log('width: ', videoElement.videoWidth);
+                    console.log('Video attached');
                 }
             },
             error: function(cause) {
