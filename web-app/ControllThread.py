@@ -14,7 +14,7 @@ class ControllThread:
         while True:
             pitch, yaw = self.controller.pitch_yaw
             self.connection.gimbal_pitch_yaw(pitch, yaw)
-            time.sleep(0.1)
+            time.sleep(0.05)
 
     def update_position(self, yaw, pitch):
         self.controller.update_pitch_yaw(pitch, yaw)
