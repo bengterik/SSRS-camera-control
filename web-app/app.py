@@ -7,13 +7,13 @@ app = Flask(__name__)
 app.config['SECRET_KEY'] = 'secret!'
 socketio = SocketIO(app)
 
-#camera = cv2.VideoCapture(0)
-
+controller = None
+RTP_feed = cv2.VideoCapture(0) # For streaming links
 
 def gen_frames():  # generate frame by frame from camera
     while True:
         # Capture frame-by-frame
-        success, frame = camera.read()  # read the camera frame
+        success, frame = RTP_feed.read()  # read the camera frame
         if not success:
             break
         else:
@@ -40,9 +40,10 @@ def handle_controller_input(data):
     y = data['y2']
     
     if x >= -1 and x <= 1 and y >= -1 and y <= 1:
-        controller.update_position(x, y)
+        if (controller != None):
+            controller.update_position(x, y)
 
 if __name__ == '__main__':
-    controller = ControllThread.ControllThread()
+    #controller = ControllThread.ControllThread()
     socketio.run(app)
 

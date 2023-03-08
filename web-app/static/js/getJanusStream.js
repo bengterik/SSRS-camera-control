@@ -67,7 +67,7 @@ Janus.init({
                         // Handle msg, if needed, and check jsep
                         console.log("Event: " + event);
                         if (event === "event" || event === "joined") { // event from the room
-                            if(msg["publishers"] !== null && msg["publishers"].length) {  
+                            if(msg["publishers"] && msg["publishers"].length) {  
                                 let list = msg["publishers"];
                                 Janus.debug("Got a list of available publishers/feeds:", list);
                                 let sources = null;

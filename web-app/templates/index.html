@@ -12,22 +12,22 @@
     <script type="text/javascript" src="{{ url_for('static', filename='js/janus.js') }}"></script>
 
     <div class="container">  
-        <!-- <img src="{{url_for('static', filename='imgs/drone_footage.png')}}" class="center"/>             
-        <img src="{{ url_for('video_feed') }}" class="center"> -->
+        <!-- <img src="{{url_for('static', filename='imgs/drone_footage.png')}}" class="center"/> -->            
+        <img src="{{ url_for('video_feed') }}" class="center"> 
         
-        <video class="center" id="remotevideo" width=100% autoplay playsinline></video>
-
+        <!-- <video class="center" id="remotevideo" width=100% autoplay playsinline></video>
+        <script type="module" src="{{ url_for('static', filename='js/getJanusStream.js') }}"></script> -->
+        
         <div class="top-left" style="float:left">
             <pre id="topleft" class="viewable-text">Some data</pre>
         </div>
         
         <div class="top-right" style="float:right">
             <pre id="topright" class="viewable-text">Some other data</pre>
-            <script type="module" src="{{ url_for('static', filename='js/getJanusStream.js') }}"></script>
         </div>
         
         <div class="centered">
-            <pre id="camera" class="viewable-text" style="color: red;">WARNING</pre>
+            <pre id="camera" class="viewable-text" style="color: red;"></pre>
         </div>
         
         <div class="bottom-left" style="float:left">
