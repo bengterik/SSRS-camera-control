@@ -1,22 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <link rel="stylesheet" href="{{ url_for('static', filename= 'css/style.css') }}">
-    <title>Camera Control</title>
-</head>
-
+    
+    <head>
+        <meta charset="UTF-8">
+        <link rel="stylesheet" href="{{ url_for('static', filename= 'css/style.css') }}">
+        <title>Camera Control</title>
+    </head>
+    
 <body>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js" integrity="sha512-q/dWJ3kcmjBLU4Qc47E4A9kTB4m3wuTY7vkFJDTZKjTs8jhyGQnaUrxa0Ytd0ssMZhbNua9hE+E7Qv1j+DyZwA==" crossorigin="anonymous"></script>
-    <script type="text/javascript" src="{{ url_for('static', filename='js/janus.js') }}"></script>
 
     <div class="container">  
         <!-- <img src="{{url_for('static', filename='imgs/drone_footage.png')}}" class="center"/> -->            
-        <img src="{{ url_for('video_feed') }}" class="center"> 
         
-        <!-- <video class="center" id="remotevideo" width=100% autoplay playsinline></video>
-        <script type="module" src="{{ url_for('static', filename='js/getJanusStream.js') }}"></script> -->
+        <video class="center" id="remotevideo" width=100% autoplay playsinline></video>
+        <!-- <img src="{{ url_for('video_feed') }}" class="center"> -->
         
         <div class="top-left" style="float:left">
             <pre id="topleft" class="viewable-text">Some data</pre>
@@ -37,12 +34,13 @@
         <div class="bottom-right" style="float:right">
             <pre id="bot-right" class="viewable-text">Latency: 1000ms </pre>
         </div>
-        
-        <script type="text/javascript" src="{{ url_for('static', filename='js/readController.js') }}"></script>    
-        
-        
-
     </div>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js" integrity="sha512-q/dWJ3kcmjBLU4Qc47E4A9kTB4m3wuTY7vkFJDTZKjTs8jhyGQnaUrxa0Ytd0ssMZhbNua9hE+E7Qv1j+DyZwA==" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='js/janus.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='js/readController.js') }}"></script>          
+    <script type="module" src="{{ url_for('static', filename='js/getJanusStream.js') }}"></script> 
+    
 </body>
 
 </html>

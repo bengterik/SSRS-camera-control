@@ -96,7 +96,8 @@ Janus.init({
                                         sources = [];
                                     sources.push(streams);
                                 }
-                                subscribeToStreams(sources); 
+                                subscribeToStreams(sources);
+                                //rtpForward(sources); 
                             } else {
                                 console.log("No publishers/feeds available");
                             }
@@ -154,6 +155,26 @@ Janus.init({
             output1.innerHTML = 'Destroyed';
         }
     });
+
+function rtpForward(sources){
+    console.log('rtpForward');
+    let video_feed = sources[0][1];
+
+    let forward = {
+        request: "rtp_forward",
+        room: 1000,
+        publisher_id: video_feed['id'],
+        host: '127.0.0.1',
+        streams: [
+            {
+                mid: video_feed['mid'], 
+                port: 8090
+            }
+        ]
+    }
+
+    localHandle.send({ message: forward });
+}
 
 function subscribeToStreams(sources){
     console.log('subscribeToStreams');
